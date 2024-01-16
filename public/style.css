@@ -1,73 +1,97 @@
-const tmdbKey = '22dc8936ad9221d4364bddfe00a50f30';
-const tmdbBaseUrl = 'https://api.themoviedb.org/3';
-const playBtn = document.getElementById('playBtn');
+body {
+    background-color: #7f0920;
+    color: #0a0408;
+}
 
-const getGenres = async () => {
-  let genreRequestEndpoint = '/genre/movie/list';
-  let requestParams = `?api_key=${tmdbKey}`;
-  let urlToFetch = `${tmdbBaseUrl}${genreRequestEndpoint}${requestParams}`;
+#appTitle {
+    text-align: center;
+    margin: 0px auto;
+    display: block;
+    font-family: 'Staatliches', sans-serif;
+    font-size: 80px;
+}
 
-  try {
-    const response = await fetch(urlToFetch);
-    if (response.ok) {
-      const jsonResponse = await response.json();
-      console.log('JSON data received:', jsonResponse);
-      const genres = jsonResponse.genres;
-      console.log('Genres:', genres);
-      return genres;
-    }
-  } catch(errors) {
-    console.log(errors);
-  }
-};
+#genreForm, #playBtn {
+    text-align: center;
+    margin: 0px auto;
+    display: block;
+    font-family: 'Fredoka One', sans-serif;
+}
 
-const getMovies = async () => {
-  const selectedGenre = getSelectedGenre();
-  let discoverMovieEndpoint = '/discover/movie';
-  let requestParams = `?api_key=${tmdbKey}&with_genres=${selectedGenre}`;
-  let urlToFetch = `${tmdbBaseUrl}${discoverMovieEndpoint}${requestParams}`;
+#movieInfo {
+    width:  65%;
+    margin:  32px auto;
+}
 
-  try {
-    const response = await fetch(urlToFetch);
-    if (response.ok) {
-      const jsonResponse = await response.json();
-      let movies = jsonResponse.results;
-      return movies;
-    }
-  } catch(error) {
-    console.log(error);
-  }
-};
+#movieInfo:after {
+    content:  "";
+    display:  table;
+    clear:  both;
+}
 
-const getMovieInfo = async (movie) => {
-  let movieId = movie.id;
-  let movieEndpoint = `/movie/${movieId}`;
-  let requestParams = `?api_key=${tmdbKey}`;
-  let urlToFetch = `${tmdbBaseUrl}${movieEndpoint}${requestParams}`;
+#moviePoster, #movieText {
+    width:  50%;
+    float:  left;
+}
 
-  try {
-    const response =  await fetch(urlToFetch);
-    if (response.ok) {
-      const jsonResponse = await response.json();
-      let movieInfo = jsonResponse;
-      return movieInfo;
-    }
-  } catch(errors) {
-    console.log(errors);
-  }
-};
+img#moviePoster {
+    width:  100%;
+    height:  auto;
+    display:  block;
+    margin:  auto;
+}
 
-// Gets a list of movies and ultimately displays the info of a random movie from the list
-const showRandomMovie = async () => {
-  const movieInfo = document.getElementById('movieInfo');
-  if (movieInfo.childNodes.length > 0) {
-    clearCurrentMovie();
-  };
-  let movies = await getMovies();
-  let randomMovie = await getRandomMovie(movies);
-  let info = await getMovieInfo(randomMovie);
-  displayMovie(info);
-};
+#movieText {
+    font-family: 'Questrial';
+    color: #FEFBEA;
+    line-height: 1.25;
+}
 
-getGenres().then(populateGenreDropdown);
-playBtn.onclick = showRandomMovie;
+#movieTitle, #movieOverview {
+    padding:  32px;
+}
+
+#playBtn {
+    margin-top: 20px;
+    font-size: 25px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    border-style: none;
+    background-color: #B97828;
+    color: #fdc238;
+    cursor:  pointer;
+}
+
+label {
+    display: block;
+    font-size: 35px;
+    margin-bottom: 5px;
+}
+
+select {
+    width: 200px;
+    height: auto;
+}
+
+#likeOrDislikeBtns {
+    text-align: center;
+    margin: 0px auto;  
+}
+
+#likeBtn, #dislikeBtn {
+    padding: 15px 25px;
+    font-size: 25px;
+    border-radius: 12px;
+    border-style: none;
+    cursor:  pointer;
+}
+
+#likeBtn {
+    background-color: #249e57;
+    color: darkgreen;
+}
+
+#dislikeBtn {
+    background-color: #c74a4a;
+    color: #910000;
+}
